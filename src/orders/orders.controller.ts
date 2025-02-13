@@ -2,7 +2,7 @@ import { Body, Controller, Get, Inject, Param, ParseUUIDPipe, Patch, Post, Query
 import { ClientProxy, MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { ORDERS_MS_SERVICE } from 'src/config';
+import { NATS_SERVICE, ORDERS_MS_SERVICE } from 'src/config';
 import { firstValueFrom } from 'rxjs';
 import { CreateOrderDto } from './dto/create-order.dto_v1';
 import { OrderPaginationDto } from './dto/order-pagination.dto';
@@ -12,7 +12,8 @@ import { StatusDto } from './dto/status.dto';
 
 export class OrdersController {
   constructor(
-    @Inject(ORDERS_MS_SERVICE) private clientOrders: ClientProxy,
+    // @Inject(ORDERS_MS_SERVICE) private clientOrders: ClientProxy,
+    @Inject(NATS_SERVICE) private clientOrders: ClientProxy,
   ) {}
 
   

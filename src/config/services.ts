@@ -3,3 +3,5 @@
 export const PRODUCTS_SERVICE = 'PRODUCTS_SERVICE';
 
 export const ORDERS_MS_SERVICE = 'ORDERS_MS_SERVICE';
+
+export const NATS_SERVICE = 'NATS_SERVICE';
