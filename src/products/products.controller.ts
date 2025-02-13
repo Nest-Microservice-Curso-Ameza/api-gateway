@@ -13,6 +13,7 @@ export class ProductsController {
     @Inject(PRODUCTS_SERVICE) private readonly productsClient: ClientProxy,
   ) {}
 
+  
   @Post()
   async createProduct(@Body() createProductDto: CreateProductDto){
 

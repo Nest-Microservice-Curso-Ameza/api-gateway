@@ -26,11 +26,11 @@ export class RpcCustomExceptionFilter implements RpcExceptionFilter {
 
     }
 
-
+   
     return response.status(status).json({
       ok: false,
-      status: status,
-      message: 'Unahutorize'
+      status: rpcError.codeStatus,
+      message: rpcError.message
     })
     // console.log('response ', response)
     // console.log('request ', request)
@@ -38,5 +38,6 @@ export class RpcCustomExceptionFilter implements RpcExceptionFilter {
 
     // throw new UnauthorizedException('nadaaaddd')
     // return throwError(() => exception.getError());
+    
   }
 }

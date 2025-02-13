@@ -10,6 +10,6 @@ export class CreateProductDto {
       maxDecimalPlaces: 4
     })
     @Min(0)
-    @Type( () => Number)
+    @Type( () => Number) 
     public price: number;
 }
