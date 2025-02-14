@@ -7,7 +7,13 @@ import { RpcCustomExceptionFilter } from './common/exceptions';
 async function bootstrap() {
 
   const logger = new Logger('Main-Gateway')
+
+  console.log('HOLA YUYUYUYUYUYUYUYUYUYfffffffffffff')
+
+
   const app = await NestFactory.create(AppModule);
+
+ 
 
   app.setGlobalPrefix('api');
 
@@ -26,7 +32,7 @@ async function bootstrap() {
   await app.listen( envs.port);
 
   
-
+  
   logger.log(` App running on por ${envs.port} `)
 }
 bootstrap();

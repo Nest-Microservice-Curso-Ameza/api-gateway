@@ -1,43 +1,36 @@
+import { Catch, ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 
-import { Catch, RpcExceptionFilter, ArgumentsHost, UnauthorizedException } from '@nestjs/common';
-import { Observable, throwError } from 'rxjs';
 import { RpcException } from '@nestjs/microservices';
 
 @Catch(RpcException)
-export class RpcCustomExceptionFilter implements RpcExceptionFilter {
-  catch(exception: RpcException, host: ArgumentsHost): any {
-
-
+export class RpcCustomExceptionFilter implements ExceptionFilter {
+  catch(exception: RpcException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
-    const request = ctx.getRequest();
-    
-    const rpcError: any = exception.getError();
 
-    const status = isNaN(rpcError.codeStatus) ? 400 : +rpcError.codeStatus;
+    const rpcError = exception.getError();
 
-    if ( typeof rpcError === 'object' && 'codeStatus' in rpcError && 'message' in rpcError && status !== 401 ) {
-
-      return  response.status(status).json({
-        ok: false,
-        status: rpcError.codeStatus,
-        message: rpcError.message
-      });
-
+    if ( rpcError.toString().includes('Empty response') ) {
+      return response.status(500).json({
+        status: 500,
+        message: rpcError.toString().substring(0, rpcError.toString().indexOf('(') - 1)
+      })
     }
 
-   
-    return response.status(status).json({
-      ok: false,
-      status: rpcError.codeStatus,
-      message: rpcError.message
-    })
-    // console.log('response ', response)
-    // console.log('request ', request)
-    // console.log('error ', error) 
 
-    // throw new UnauthorizedException('nadaaaddd')
-    // return throwError(() => exception.getError());
-    
+
+    if (
+      typeof rpcError === 'object' &&
+      'status' in rpcError &&
+      'message' in rpcError
+    ) {
+      const status = isNaN(+rpcError.status) ? 400 :+rpcError.status;
+      return response.status(status).json(rpcError);
+    }
+
+    response.status(400).json({
+      status: 400,
+      message: rpcError,
+    });
   }
 }
